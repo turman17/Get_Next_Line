@@ -3,100 +3,81 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vtryason <vtryason@student.42.fr>          +#+  +:+       +#+        */
+/*   By: viktortr <viktortr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/18 13:13:22 by vtryason          #+#    #+#             */
-/*   Updated: 2023/04/18 15:21:30 by vtryason         ###   ########.fr       */
+/*   Created: 2023/04/19 00:07:57 by viktortr          #+#    #+#             */
+/*   Updated: 2023/04/19 00:17:57 by viktortr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_strlen(const char *str)
+static size_t	ft_strlen(const char *s)
 {
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		i++;
-	}
-	return (i);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	int				i;
-	unsigned char	c1;
-
-	i = 0;
-	c1 = c;
-	while (s[i])
-	{
-		if (s[i] == c1)
-			return ((char *)s + i);
-		i++;
-	}
-	if (s[i] == c1)
-		return ((char *)s + i);
-	return (NULL);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*joined;
+	size_t	sz;
 	int		i;
 
 	i = 0;
-	if (!s1 || !s2)
-		return (NULL);
-	joined = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!joined)
-		return (NULL);
-	while (*s1)
-		joined[i++] = *s1++;
-	while (*s2)
-		joined[i++] = *s2++;
-	joined[i] = 0;
-	return (joined);
+	sz = 0;
+	while (s[i])
+	{
+		i++;
+		sz++;
+	}
+	return (sz);
 }
 
-char	*ft_strdup(const char *s)
+static	void	*ft_memset(void *b, int c, size_t len)
 {
-	char		*p;
-	size_t		len;
-	const char	*q;
-	char		*r;
+	unsigned char	*val;
+	int				i;
 
-	len = 0;
-	q = s;
-	while (*q != '\0')
+	i = 0;
+	val = (unsigned char *)b;
+	while (len > 0)
 	{
-		len++;
-		q++;
+		val[i++] = (unsigned char)c;
+		len--;
 	}
-	len++;
-	p = (char *)malloc(len * sizeof(char));
-	if (p != NULL)
-	{
-		r = p;
-		while (*s != '\0')
-		{
-			*r++ = *s++;
-		}
-		*r = '\0';
-	}
-	return (p);
+	return (b);
 }
 
-char	*ft_strnew(size_t size)
+void	*ft_calloc(size_t count, size_t size)
 {
-	char *str;
+	void	*mem;
 
-	if (!(str = (char *)malloc(sizeof(char) * size + 1)))
+	mem = malloc(count * size);
+	if (mem == NULL)
 		return (NULL);
-	str[size] = '\0';
-	while (size--)
-		str[size] = '\0';
-	return (str);
+	ft_memset(mem, '\0', (count * size));
+	return (mem);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*newstring;
+	int		i;
+	int		n;
+
+	i = 0;
+	n = 0;
+	if (s1 == NULL)
+		return (s2);
+	newstring = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (newstring == NULL)
+		return (NULL);
+	while (s1[i])
+	{
+		newstring[i] = s1[i];
+		i++;
+	}
+	while (s2[n])
+	{
+		newstring[i + n] = s2[n];
+		n++;
+	}
+	newstring[i + n] = '\0';
+	free(s1);
+	free(s2);
+	return (newstring);
 }

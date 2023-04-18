@@ -6,70 +6,86 @@
 /*   By: viktortr <viktortr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 13:15:49 by vtryason          #+#    #+#             */
-/*   Updated: 2023/04/18 16:18:37 by viktortr         ###   ########.fr       */
+/*   Updated: 2023/04/19 00:50:58 by viktortr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	check_reminder(char *reaminder, char *line)
+static void	copy_s2_in_s1(char *s1, char *s2)
 {
-	char	*p_n;
+	int	i;
 
-	p_n = NULL;
-	if (reaminder)
+	i = 0;
+	while (s2[i])
 	{
-		if ((p_n = ft_strchr(buf, '\n')))
-		{
-            p_n = '\0';
-            line = ft_strdup(reminder);
-		}
+		s1[i] = s2[i];
+		i++;
 	}
-	else
-		line = ft_strnew(1);
+	s1[i] = '\0';
+}
+
+static int	find_line(char *buf, char **line)
+{
+	int		i;
+	int		j;
+	int		flag_line;
+	char	*find_line;
+
+	i = 0;
+	j = 0;
+	while (buf[i] && buf[i] != '\n')
+		i++;
+	flag_line = 0;
+	if (buf[i] == '\n')
+		flag_line = 1;
+	find_line = ft_calloc(i + flag_line + 1, 1);
+	if (find_line == NULL)
+		return (-1);
+	while (j < i + flag_line)
+	{
+		find_line[j] = buf[j];
+		j++;
+	}
+	*line = ft_strjoin(*line, find_line);
+	if (line == NULL)
+		return (-1);
+	copy_s2_in_s1(buf, &buf[i + flag_line]);
+	return (flag_line);
+}
+
+static char	*free_line(char **line)
+{
+	if (*line != NULL)
+		free(*line);
+	return (NULL);
 }
 
 char	*get_next_line(int fd)
 {
-	char		buf[1000 + 1];
-	int			byte_was_read;
+	static char	buf[BUFFER_SIZE + 1];
 	char		*line;
-	char		*p_n;
-	int			flag;
-	static char	*reaminder;
+	int			count_byte;
+	int			flag_line;
 
-	flag = 1;
-	if (reaminder)
-		line = ft_strdup(reaminder);
-	else
-		line = ft_strnew(1);
-	while (flag && (byte_was_read = read(fd, buf, 10)))
+	line = NULL;
+	flag_line = 0;
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	while (flag_line == 0)
 	{
-		buf[byte_was_read] = '\0';
-		if ((p_n = ft_strchr(buf, '\n')))
+		flag_line = find_line(buf, &line);
+		if (flag_line == -1)
+			return (free_line(&line));
+		if (flag_line == 0)
 		{
-			*p_n = '\0';
-			flag = 0;
-			p_n++;
-			reaminder = ft_strdup(p_n);
+			count_byte = read(fd, buf, BUFFER_SIZE);
+			if (count_byte == 0 && *line)
+				flag_line = 1;
+			else if (count_byte <= 0)
+				return (free_line(&line));
+			buf[count_byte] = '\0';
 		}
-		line = ft_strjoin(line, buf);
 	}
 	return (line);
 }
-
-// int	main(void)
-// {
-// 	char	*line;
-// 	int		fd;
-
-// 	fd = open("test.txt", O_RDONLY);
-// 	line = get_next_line(fd);
-// 	printf("%s\n\n", line);
-// 	line = get_next_line(fd);
-// 	printf("%s\n", line);
-// 	line = get_next_line(fd);
-// 	printf("%s\n\n", line);
-// 	line = get_next_line(fd);
-// 	printf("%s\n", line);
-// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vtryason <vtryason@student.42.fr>          +#+  +:+       +#+        */
+/*   By: viktortr <viktortr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 12:51:38 by vtryason          #+#    #+#             */
-/*   Updated: 2023/04/18 15:17:31 by vtryason         ###   ########.fr       */
+/*   Updated: 2023/04/19 00:16:38 by viktortr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 # include <unistd.h>
 
 char	*get_next_line(int fd);
-char	*ft_strjoin(char const *s1, char const *s2);
-int		ft_strlen(const char *str);
-char	*ft_strchr(const char *s, int c);
-char	*ft_strdup(const char *s);
-char	*ft_strnew(size_t size);
+char	*ft_strjoin(char *s1, char *s2);
+void	*ft_calloc(size_t count, size_t size);
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1000
+# endif
 #endif
