@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vtryason <vtryason@student.42.fr>          +#+  +:+       +#+        */
+/*   By: viktortr <viktortr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 13:15:49 by vtryason          #+#    #+#             */
-/*   Updated: 2023/04/18 15:21:22 by vtryason         ###   ########.fr       */
+/*   Updated: 2023/04/18 16:18:37 by viktortr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	check_reminder(char *reaminder, char *line)
+{
+	char	*p_n;
+
+	p_n = NULL;
+	if (reaminder)
+	{
+		if ((p_n = ft_strchr(buf, '\n')))
+		{
+            p_n = '\0';
+            line = ft_strdup(reminder);
+		}
+	}
+	else
+		line = ft_strnew(1);
+}
 
 char	*get_next_line(int fd)
 {
