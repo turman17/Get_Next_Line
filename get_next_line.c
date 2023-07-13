@@ -6,11 +6,10 @@
 /*   By: viktortr <viktortr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 13:15:49 by vtryason          #+#    #+#             */
-/*   Updated: 2023/04/19 13:16:19 by viktortr         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:40:09 by viktortr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
 #include "get_next_line.h"
 
 static void	copy_s2_in_s1(char *s1, char *s2)
